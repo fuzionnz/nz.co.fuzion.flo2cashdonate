@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <extension key="nz.co.giantrobot.flo2cashdonate" type="payment">
+  <file>Flo2CashDonate</file>
+  <name>Flo2Cash Donate</name>
+  <description>Flo2Cash Donate Payment Processor</description>
+  <urls>
+    <url desc="Main Extension Page">http://www.giantrobot.co.nz/projects/flo2cashdonate</url>
+    <url desc="Documentation">http://www.giantrobot.co.nz/projects/flo2cashdonate/docs</url>
+    <url desc="Support">http://www.giantrobot.co.nz/projects/flo2cashdonate/support</url>
+    <url desc="Licensing">http://www.gnu.org/copyleft/gpl.html</url>
+  </urls>
+  <license>GPLv3+</license>
+  <maintainer>
+    <author>Chris Burgess</author>
+    <email>projects@giantrobot.co.nz</email>
+  </maintainer>
+  <releaseDate>2011-09-14</releaseDate>
+  <version>v0.1</version>
+  <develStage>development</develStage>
+  <compatibility><ver>3.4</ver></compatibility>
+  <comments></comments>
+  <typeInfo>
+   <userNameLabel>Account ID</userNameLabel>
+   <passwordLabel></passwordLabel>
+   <signatureLabel></signatureLabel>
+   <subjectLabel></subjectLabel>
+   <urlSiteDefault>https://secure.flo2cash.co.nz/donations/FIXME/donate.aspx</urlSiteDefault>
+   <urlApiDefault></urlApiDefault>
+   <urlRecurDefault>https://secure.flo2cash.co.nz/donations/FIXME/donate.aspx</urlRecurDefault>
+   <urlSiteTestDefault>http://demo.flo2cash.co.nz/donations/FIXME/donate.aspx</urlSiteTestDefault>
+   <urlApiTestDefault></urlApiTestDefault>
+   <urlRecurTestDefault>http://demo.flo2cash.co.nz/donations/FIXME/donate.aspx</urlRecurTestDefault>
+   <urlButtonDefault></urlButtonDefault>
+   <urlButtonTestDefault></urlButtonTestDefault>
+   <billingMode>notify</billingMode>
+   <isRecur>1</isRecur>
+   <paymentType>1</paymentType>
+  </typeInfo>
+</extension>

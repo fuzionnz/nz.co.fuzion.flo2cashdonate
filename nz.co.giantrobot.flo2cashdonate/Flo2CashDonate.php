@@ -94,7 +94,7 @@ INSERT INTO civicrm_payment_processor_type (
  ********************************************************************************
  */
 
-class CRM_Core_Payment_Flo2CashDonate extends CRM_Core_Payment { 
+class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment { 
     /**
      * mode of operation: live or test
      *
@@ -103,13 +103,23 @@ class CRM_Core_Payment_Flo2CashDonate extends CRM_Core_Payment {
      */
     static protected $_mode = null;
 
-
     static private $_singleton = null;
 
     static function &singleton( $mode, &$paymentProcessor ) {
+        if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
+            // check for presence of f2c_ipn.php in civicrm/extern,
+            // and advise admin of need to manually install if not
+            global $civicrm_root;
+            $ipn_php = 'f2c_ipn.php' ;
+            $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
+            $source_path = dirname(__FILE__) . '/' . $ipn_php ;
+            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/f2c_ipn.php' ) ) {
+                CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
+            }
+        }
         $processorName = $paymentProcessor['name'];
         if (self::$_singleton[$processorName] === null ) {
-            self::$_singleton[$processorName] = new CRM_Core_Payment_Flo2CashDonate( $mode, $paymentProcessor );
+            self::$_singleton[$processorName] = new nz_co_giantrobot_Flo2CashDonate( $mode, $paymentProcessor );
         }
         return self::$_singleton[$processorName];
     }
