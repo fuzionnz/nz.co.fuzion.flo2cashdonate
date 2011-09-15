@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <extension key="nz.co.giantrobot.flo2cashdonate" type="payment">
+  <file>Flo2CashDonate.php</file>
+  <name>nz_co_giantrobot_payment_flo2cash_donate</name>
+  <description>Flo2Cash Donate Payment Processor</description>
+  <urls>
+    <url desc="Main Extension Page">http://www.giantrobot.co.nz/projects/flo2cashdonate</url>
+    <url desc="Documentation">http://www.giantrobot.co.nz/projects/flo2cashdonate/docs</url>
+    <url desc="Support">http://www.giantrobot.co.nz/projects/flo2cashdonate/support</url>
+    <url desc="Licensing">http://www.gnu.org/copyleft/gpl.html</url>
+  </urls>
+  <license>GPLv3+</license>
+  <maintainer>
+    <author>Chris Burgess</author>
+    <email>projects@giantrobot.co.nz</email>
+  </maintainer>
+  <releaseDate>2011-09-14</releaseDate>
+  <version>v0.1</version>
+  <develStage>development</develStage>
+  <compatibility><ver>3.4</ver></compatibility>
+  <comments></comments>
+  <typeInfo>
+   <userNameLabel></userNameLabel>
+   <passwordLabel>[Label to use for the password field]</passwordLabel>
+   <signatureLabel>[Label to use for the signature field]</signatureLabel>
+   <subjectLabel>[Label to use for the subject field]</subjectLabel>
+   <urlSiteDefault>[The url to use to process live site transactions]</urlSiteDefault>
+   <urlApiDefault>[NEEDS A DESCRIPTION]</urlApiDefault>
+   <urlRecurDefault>[NEEDS A DESCRIPTION]</urlRecurDefault>
+   <urlSiteTestDefault>[The url to use to process test site transactions]</urlSiteTestDefault>
+   <urlApiTestDefault>[NEEDS A DESCRIPTION]</urlApiTestDefault>
+   <urlRecurTestDefault>[NEEDS A DESCRIPTION]</urlRecurTestDefault>
+   <urlButtonDefault>[NEEDS A DESCRIPTION]</urlButtonDefault>
+   <urlButtonTestDefault>[NEEDS A DESCRIPTION]</urlButtonTestDefault>
+   <billingMode>[See below for description of billing modes]</billingMode>
+   <isRecur>[NEEDS A DESCRIPTION]</isRecur>
+   <paymentType>[NEEDS A DESCRIPTION]</paymentType>
+  </typeInfo>
+</extension>

@@ -2,11 +2,11 @@
 
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 2.0                                                |
+ | Flo2Cash Donate v0.1                                               |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2007                                |
+ | Copyright Giant Robot Ltd (c) 2007-2011                            |
  +--------------------------------------------------------------------+
- | This file is a part of CiviCRM.                                    |
+ | This file is a payment processor for CiviCRM.                      |
  |                                                                    |
  | CiviCRM is free software; you can copy, modify, and distribute it  |
  | under the terms of the GNU Affero General Public License           |
@@ -28,7 +28,7 @@
 /** 
  * 
  * @package CRM 
- * @copyright CiviCRM LLC (c) 2004-2007 
+ * @copyright Giant Robot Ltd (c) 2007-2011 
  * $Id$ 
  * 
  */ 
@@ -40,7 +40,7 @@ require_once 'CRM/Core/Payment.php';
  *********************************************************************************
 
 INSERT INTO civicrm_payment_processor_type ( 
-  domain_id, name, title, description, 
+  name, title, description, 
   is_active, is_default, user_name_label, 
   password_label, signature_label, subject_label, 
   class_name, url_site_default, url_api_default, 
@@ -49,8 +49,6 @@ INSERT INTO civicrm_payment_processor_type (
   url_recur_test_default, url_button_test_default, 
   billing_mode, is_recur 
  ) values ( 
-  -- domain_id
-  1,
   -- name
   'Flo2Cash_Donate',
   -- title
@@ -129,10 +127,12 @@ class CRM_Core_Payment_Flo2CashDonate extends CRM_Core_Payment {
         $this->_processorName    = ts('Flo2Cash');
 
         $config = CRM_Core_Config::singleton();
-        $this->_setParam( 'apiLogin'   , $paymentProcessor['user_name'] );
-        $this->_setParam( 'paymentKey' , $paymentProcessor['password']  );
-        $this->_setParam( 'md5Hash'    , $paymentProcessor['signature'] );
         
+        // these will be set to demo or live values accordingly
+        $this->_setParam( 'userName', $paymentProcessor['user_name'] );
+        $this->_setParam( 'url_site', $paymentProcessor['url_site'] ); 
+        $this->_setParam( 'url_recur', $paymentProcessor['url_recur'] ); 
+
         $this->_setParam( 'emailCustomer', 'TRUE' );
         $this->_setParam( 'timestamp', time( ) );
         srand( time( ) );
@@ -140,8 +140,8 @@ class CRM_Core_Payment_Flo2CashDonate extends CRM_Core_Payment {
     }
 
     /** 
-     * This function checks to see if we have the right config values 
-     * 
+     * This function checks to see if we have the right config values.
+     *
      * @return string the error message if any 
      * @public 
      */ 
@@ -151,9 +151,17 @@ class CRM_Core_Payment_Flo2CashDonate extends CRM_Core_Payment {
         $error = array( );
 
         if ( empty( $this->_paymentProcessor['user_name'] ) ) {
-            $error[] = ts( 'Account ID is not set in the Administer CiviCRM &raquo; Payment Processor.' );
+            $error[] = ts( 'Account ID is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
         }
-        
+
+        if ( empty( $this->_paymentProcessor['url_site'] ) ) {
+            $error[] = ts( 'Site URL is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
+        }
+
+        if ( empty( $this->_paymentProcessor['user_name'] ) ) {
+            $error[] = ts( 'Recurring Payments URL is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
+        }
+
         if ( ! empty( $error ) ) {
             return implode( '<p>', $error );
         } else {
