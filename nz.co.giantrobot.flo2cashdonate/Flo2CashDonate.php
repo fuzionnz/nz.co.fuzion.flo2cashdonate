@@ -330,4 +330,16 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
         }
     }
 
+    /**
+     * Handle a notification request from a payment gateway.
+     *
+     * Might be useful to pass in the paymentProcessor object.
+     *
+     * $_GET and $_POST are already available in IPN so no point passing them?
+     */ 
+    function paymentNotify() {
+        require_once 'Flo2CashDonateIPN.php';
+        nz_co_giantrobot_Flo2CashDonateIPN::main();
+    }
+
 }
