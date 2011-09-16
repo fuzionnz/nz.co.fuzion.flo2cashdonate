@@ -47,17 +47,6 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
     static private $_singleton = null;
 
     static function &singleton( $mode, &$paymentProcessor ) {
-        if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
-            // check for presence of f2c_ipn.php in civicrm/extern,
-            // and advise admin of need to manually install if not
-            global $civicrm_root;
-            $ipn_php = 'f2c_ipn.php' ;
-            $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
-            $source_path = dirname(__FILE__) . '/' . $ipn_php ;
-            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/f2c_ipn.php' ) ) {
-                CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
-            }
-        }
         $processorName = $paymentProcessor['name'];
         if (self::$_singleton[$processorName] === null ) {
             self::$_singleton[$processorName] = new nz_co_giantrobot_Flo2CashDonate( $mode, $paymentProcessor );
@@ -88,6 +77,19 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
         $this->_setParam( 'timestamp', time( ) );
         srand( time( ) );
         $this->_setParam( 'sequence', rand( 1, 1000 ) );
+
+        // if the IPN handler isn't installed, notify admin
+        if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
+            // check for presence of f2c_ipn.php in civicrm/extern,
+            // and advise admin of need to manually install if not
+            global $civicrm_root;
+            $ipn_php = 'f2c_ipn.php' ;
+            $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
+            $source_path = dirname(__FILE__) . '/' . $ipn_php ;
+            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/f2c_ipn.php' ) ) {
+                CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
+            }
+        }
     }
 
     /** 
