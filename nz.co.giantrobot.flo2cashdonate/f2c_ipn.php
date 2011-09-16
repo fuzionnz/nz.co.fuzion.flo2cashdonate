@@ -6,13 +6,8 @@ require_once 'CRM/Core/Config.php';
 
 $config = CRM_Core_Config::singleton();
 
-// Probably there's a cleaner way to require an extension's base file?
-// 
-// Looking at OgoneNotify.php [1] it appears that the extension
-// directory has already been added to the path, but my experience didn't
-// match this.
-//
-// [1] https://github.com/cray146/CiviCRM-Ogone-Payment-Processor/blob/master/org.civicrm.payment.ogone/OgoneNotify.php
+// unless there's a cleaner way to load extensions?
+// http://forum.civicrm.org/index.php/topic,21573.0.html
 require_once 'CRM/Core/Extensions/Extension.php';
 $ext = new CRM_Core_Extensions_Extension( 'nz.co.giantrobot.flo2cashdonate' );
 if ( !empty( $ext->path ) ) {
