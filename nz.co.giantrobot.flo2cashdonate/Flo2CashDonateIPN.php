@@ -170,7 +170,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
             $input['amount']     = $contribution->total_amount;
             $input['fee_amount'] = null;
             $input['net_amount'] = null;
-            $input['trxn_id']    = $f2c_ref;
+            $input['trxn_id']    = $f2c_reference_id;
             $input['is_test']    = $contribution->is_test;
 
             $ipn->completeTransaction( $input, $ids, $objects, $transaction );
