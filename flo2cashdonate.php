@@ -35,7 +35,7 @@
 
 require_once 'CRM/Core/Payment.php';
 
-class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment { 
+class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
     /**
      * mode of operation: live or test
      *
@@ -83,10 +83,10 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
             // check for presence of f2c_ipn.php in civicrm/extern,
             // and advise admin of need to manually install if not
             global $civicrm_root;
-            $ipn_php = 'f2c_ipn.php' ;
+            $ipn_php = 'extIPN.php' ;
             $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
             $source_path = dirname(__FILE__) . '/' . $ipn_php ;
-            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/f2c_ipn.php' ) ) {
+            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/extIPN.php' ) ) {
                 CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
             }
         }
@@ -144,11 +144,11 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
         $component = strtolower( $component );
         
         $server_type  = ( $this->_mode == 'test' ) ? 'sandbox' : '';
-        
-        $notifyURL = 
-            $config->userFrameworkResourceURL . 
-            "extern/f2c_ipn.php?reset=1&module={$component}" ;
-                
+
+        $notifyURL =
+            $config->userFrameworkResourceURL .
+            "extern/extIPN.php?reset=1&module={$component}&extension=nz.co.giantrobot.flo2cashdonate" ;
+
         $notifyParams = array('contactID', 'contributionID', 'eventID', 'participantID');
         foreach ( $notifyParams as $notifyParam ) {
             if ( isset($params[$notifyParam]) ) {
@@ -176,7 +176,7 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
         CRM_Utils_Hook::alterPaymentProcessorParams( $this, $params, $paypalParams );
 
         // could also use "$params['is_recur'] + 1"
-        $donation_type = ( $params['is_recur'] ) ? 2 : 1 ;
+        $donation_type = ( isset($params['is_recur']) ) ? 2 : 1 ;
 
         $frequencies = array( '1'  => 'day',
                               '2'  => 'week',
@@ -197,17 +197,17 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
             'Donation_Type'            => $donation_type,
             'Notification_URL'         => $notifyURL,
             'Return_URL'               => $returnURL,
-            'Frequency_ID'             => array_search( $params['frequency_unit'], $frequencies ),
+            'Frequency_ID'             => isset($params['frequency_unit']) ? array_search( $params['frequency_unit'], $frequencies ) : NULL,
             'Installment_Number'       => $params['installments'],
             'Invoice_ID'               => $params['invoiceID'],
             'Cancel_URL'               => $cancelURL,
             //                      'account_id'               => $this->_paymentProcessor['user_name'],
         );
-        
+
         if ( empty( $form_vars['Frequency_ID'] ) ) {
             $form_vars['Frequency_ID'] = 1 ;
         }
-        
+
         $url = $this->_paymentProcessor['url_site'] . '?' ;
 
         foreach ( $form_vars as $key => $value ) {
@@ -279,9 +279,9 @@ class nz_co_giantrobot_Flo2CashDonate extends CRM_Core_Payment {
      * Might be useful to pass in the paymentProcessor object.
      *
      * $_GET and $_POST are already available in IPN so no point passing them?
-     */ 
+     */
     function paymentNotify() {
-        require_once 'Flo2CashDonateIPN.php';
+        require_once 'flo2cashdonateipn.php';
         nz_co_giantrobot_Flo2CashDonateIPN::main();
     }
 

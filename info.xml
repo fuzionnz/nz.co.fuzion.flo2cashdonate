@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  <extension key="nz.co.giantrobot.flo2cashdonate" type="payment">
-  <file>Flo2CashDonate</file>
+  <file>flo2cashdonate</file>
   <name>Flo2Cash Donate</name>
   <description>Flo2Cash Donate Payment Processor</description>
   <urls>
@@ -22,7 +22,7 @@
   <typeInfo>
    <userNameLabel>Account ID</userNameLabel>
    <passwordLabel></passwordLabel>
-   <signatureLabel></signatureLabel>
+   <signatureLabel>Client ID</signatureLabel>
    <subjectLabel></subjectLabel>
    <urlSiteDefault>https://secure.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlSiteDefault>
    <urlApiDefault></urlApiDefault>
