@@ -20,36 +20,36 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      * @static
      */
     static protected $_mode = null;
-    
-    /** 
-     * Constructor 
-     * 
+
+    /**
+     * Constructor
+     *
      * @param string $mode the mode of operation: live or test
      *
-     * @return void 
-     */ 
+     * @return void
+     */
     function __construct( $mode ) {
         parent::__construct( );
-        
+
         $this->_mode = $mode;
     }
 
-    /**  
-     * singleton function used to manage this object  
-     *  
+    /**
+     * singleton function used to manage this object
+     *
      * @param string $mode the mode of operation: live or test
-     *  
-     * @return object  
-     * @static  
-     */  
+     *
+     * @return object
+     * @static
+     */
     static function &singleton( $mode, $component ) {
         if ( self::$_singleton === null ) {
             self::$_singleton = new nz_co_giantrobot_Flo2CashDonateIPN( $mode );
         }
         return self::$_singleton;
     }
-    
-    static function retrieve( $name, $type, $location = 'POST', $abort = true ) 
+
+    static function retrieve( $name, $type, $location = 'POST', $abort = true )
     {
         static $store = null;
         $value = CRM_Utils_Request::retrieve( $name, $type, $store,
@@ -62,14 +62,14 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         return $value;
     }
 
-    /**  
+    /**
      * The function retrieves the amount the contribution is for, based on the order-no google sends
-     *  
+     *
      * @param int $orderNo <order-total> send by google
-     *  
-     * @return amount  
-     * @access public 
-     */  
+     *
+     * @return amount
+     * @access public
+     */
     function getAmount($orderNo) {
         require_once 'CRM/Contribute/DAO/Contribution.php';
         $contribution = new CRM_Contribute_DAO_Contribution( );
@@ -87,7 +87,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      * a notification or request is sent by the Google Server.
      *
      */
-    static function main() 
+    static function main()
     {
 /* for IPN debugging - store the IPN data in /tmp/ and process manually */
 //        if ( $_SERVER['REMOTE_ADDR'] != '10.0.0.5' ) {
@@ -114,7 +114,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         $contribution_id       = self::retrieve( 'contributionID',        'Integer', 'GET',  true );
         // POST
         $donation_id           = self::retrieve( 'Donation_ID',           'Integer', 'POST', true );
-        $f2c_reference_id      = self::retrieve( 'F2C_Reference_ID',      'String', 'POST', true );
+        $f2c_reference_id      = self::retrieve( 'F2C_Reference_ID',      'String',  'POST', true );
         $transaction_status_id = self::retrieve( 'Transaction_Status_ID', 'String',  'POST', true );
         $invoice_id            = self::retrieve( 'Invoice_ID',            'String',  'POST', true );
         $amount                = self::retrieve( 'Amount',                'String',  'POST', true );
@@ -135,7 +135,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
 
         if ( $contribution->contribution_status_id == 1 ) {
             CRM_Core_Error::debug_log_message( "Contribution already handled (ContributionID = $contribution_id)." );
-            echo "Contribution already handled.<p>";            
+            echo "Contribution already handled.<p>";
             exit( );
         }
 
@@ -145,8 +145,8 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
 
         $ids['event'] = $ids['participant'] = $ids['membership'] = null;
         $ids['contributionRecur'] = $ids['contributionPage'] = null;
-                
-        list( $ids['membership'], $ids['related_contact'], $ids['onbehalf_dupe_alert'] ) = 
+
+        list( $ids['membership'], $ids['related_contact'], $ids['onbehalf_dupe_alert'] ) =
             explode( CRM_Core_DAO::VALUE_SEPARATOR, $contribution->trxn_id );
 
         foreach ( array('membership', 'related_contact', 'onbehalf_dupe_alert') as $fld ) {
@@ -181,7 +181,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
             echo "Failure: Unrecognised Transaction Status.<p>";
             exit( );
         }
-        
+
     }
 
 }
