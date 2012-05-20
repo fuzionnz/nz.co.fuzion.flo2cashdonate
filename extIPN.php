@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Until CiviCRM ships with a method to allow extensions to receive IPN (CRM-10249)
+ * this file needs to be copied to your civicrm/extern folder for IPN functionality.
+ */
+
 session_start( );
 require_once '../civicrm.config.php';
 require_once 'CRM/Core/Config.php';
