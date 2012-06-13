@@ -11,3 +11,10 @@ support recurring payments.
 For information and pricing, contact Flo2Cash.
 
 * http://www.flo2cash.co.nz/contact.php
+
+== TODO ==
+
+* Test v1.x with recurring contributions.
+* Remove URL Recur (checking with F2C)
+* Remove Account ID (checking with F2C)
+* Link to Donate interface docs.
