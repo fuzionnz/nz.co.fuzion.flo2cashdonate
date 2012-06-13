@@ -2,9 +2,9 @@
 
 /*
  +--------------------------------------------------------------------+
- | Flo2Cash Donate v0.1                                               |
+ | Flo2Cash Donate                                                    |
  +--------------------------------------------------------------------+
- | Copyright Giant Robot Ltd (c) 2007-2011                            |
+ | Copyright Giant Robot Ltd (c) 2007-2012                            |
  +--------------------------------------------------------------------+
  | This file is a payment processor for CiviCRM.                      |
  |                                                                    |
@@ -26,11 +26,8 @@
 */
 
 /**
- *
  * @package CRM
- * @copyright Giant Robot Ltd (c) 2007-2011
- * $Id$
- *
+ * @copyright Giant Robot Ltd (c) 2007-2012
  */
 
 require_once 'CRM/Core/Payment.php';
@@ -158,7 +155,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
                 $ipn_query_data['mode'] = $this->_mode;
             }
             $ipn_query_data['module'] = $component;
-            $ipn_query_data['processor_name'] = $processor['name'];
+            $ipn_query_data['processor_name'] = $processor['payment_processor_type'];
             $notifyURL = CRM_Utils_System::url('civicrm/payment/ipn', '', TRUE, NULL, FALSE);
         }
         else {
@@ -189,7 +186,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
                                             "$cancel=1&cancel=1&qfKey={$params['qfKey']}",
                                             TRUE, NULL, FALSE );
 
-        // ensure that the returnURL is absolute.
+        // Ensure that the returnURL is absolute.
         if ( substr( $returnURL, 0, 4 ) != 'http' ) {
             require_once 'CRM/Utils/System.php';
             $fixUrl = CRM_Utils_System::url("civicrm/admin/setting/url", '&reset=1');
@@ -199,7 +196,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         // Allow further manipulation of the arguments via custom hooks ..
         CRM_Utils_Hook::alterPaymentProcessorParams( $this, $params, $paypalParams );
 
-        // could also use "$params['is_recur'] + 1"
+        // Could also use "$params['is_recur'] + 1"
         $donation_type = ( isset($params['is_recur']) ) ? 2 : 1 ;
 
         $frequencies = array( '1'  => 'day',
