@@ -22,16 +22,16 @@
   </compatibility>
   <comments></comments>
   <typeInfo>
-   <userNameLabel>Account ID</userNameLabel>
+   <userNameLabel></userNameLabel>
    <passwordLabel></passwordLabel>
    <signatureLabel></signatureLabel>
    <subjectLabel></subjectLabel>
    <urlSiteDefault>https://secure.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlSiteDefault>
    <urlApiDefault></urlApiDefault>
-   <urlRecurDefault>https://secure.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlRecurDefault>
+   <urlRecurDefault></urlRecurDefault>
    <urlSiteTestDefault>http://demo.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlSiteTestDefault>
    <urlApiTestDefault></urlApiTestDefault>
-   <urlRecurTestDefault>http://demo.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlRecurTestDefault>
+   <urlRecurTestDefault></urlRecurTestDefault>
    <urlButtonDefault></urlButtonDefault>
    <urlButtonTestDefault></urlButtonTestDefault>
    <billingMode>notify</billingMode>

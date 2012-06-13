@@ -67,9 +67,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         $config = CRM_Core_Config::singleton();
 
         // these will be set to demo or live values accordingly
-        $this->_setParam( 'userName', $paymentProcessor['user_name'] );
         $this->_setParam( 'url_site', $paymentProcessor['url_site'] );
-        $this->_setParam( 'url_recur', $paymentProcessor['url_recur'] );
 
         $this->_setParam( 'emailCustomer', 'TRUE' );
         $this->_setParam( 'timestamp', time( ) );
@@ -81,8 +79,8 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         if (!method_exists('CRM_Core_Payment', 'handleIPN')) {
             // If the IPN handler isn't installed, notify admin
             if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
-                // check for presence of extIPN.php in civicrm/extern,
-                // and advise admin of need to manually install if not
+                // Check for presence of extIPN.php in civicrm/extern,
+                // and advise admin of need to manually install if not.
                 global $civicrm_root;
                 $ipn_php = 'extIPN.php' ;
                 $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
@@ -105,16 +103,8 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
 
         $error = array( );
 
-        if ( empty( $this->_paymentProcessor['user_name'] ) ) {
-            $error[] = ts( 'Account ID is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
-        }
-
         if ( empty( $this->_paymentProcessor['url_site'] ) ) {
             $error[] = ts( 'Site URL is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
-        }
-
-        if ( empty( $this->_paymentProcessor['user_name'] ) ) {
-            $error[] = ts( 'Recurring Payments URL is not set in Administer CiviCRM &raquo; Configure &raquo; Global Settings &raquo; Payment Processors &raquo; ' . $this->_paymentProcessor['name'] );
         }
 
         if ( ! empty( $error ) ) {
@@ -125,7 +115,9 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
     }
 
     /**
-     * @see Flo2CashWebService for direct payment implementation
+     * @see nz.co.giantrobot.flo2cashwebservice for direct payments.
+     *
+     * https://github.com/GiantRobot/nz.co.giantrobot.flo2cashwebservice
      */
     function doDirectPayment( &$params ) {
         CRM_Core_Error::fatal( ts( 'This function is not implemented' ) );
@@ -199,10 +191,12 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         // Could also use "$params['is_recur'] + 1"
         $donation_type = ( isset($params['is_recur']) ) ? 2 : 1 ;
 
-        $frequencies = array( '1'  => 'day',
-                              '2'  => 'week',
-                              '7'  => 'month',
-                              '13' => 'year' ) ;
+        $frequencies = array(
+          '1'  => 'day',
+          '2'  => 'week',
+          '7'  => 'month',
+          '13' => 'year'
+        ) ;
         if ( !isset( $params['installments'] ) || empty( $params['installments'] ) ) {
             $params['installments'] = 0 ;
         }
@@ -230,16 +224,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         }
 
         $url = $this->_paymentProcessor['url_site'] . '?' ;
-
-        foreach ( $form_vars as $key => $value ) {
-            $url .= "$key=" . urlencode($value) . '&' ;
-        }
-
-        // prob not required
-        $url = trim($url,'&');
-
-                                $dbg = array('form_vars' => $form_vars, 'params' => $params, 'this' => $this,);
-        watchdog( 'civicrm', '<pre>!dbg</pre>', array('dbg' => print_r($dbg,1)), WATCHDOG_DEBUG ) ;
+        $url .= http_build_query($form_vars, NULL, '&');
 
         CRM_Utils_System::redirect( $url );
         exit( );
