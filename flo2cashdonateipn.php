@@ -30,7 +30,6 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      */
     function __construct( $mode ) {
         parent::__construct( );
-
         $this->_mode = $mode;
     }
 
@@ -49,6 +48,16 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         return self::$_singleton;
     }
 
+    /**
+     * Retrieve values from request data.
+     *
+     * @param string value name
+     * @param string value type
+     * @param string value location
+     * @param string abort if not found
+     *
+     * @see CRM_Utils_Request::retrieve()
+     */
     static function retrieve( $name, $type, $location = 'POST', $abort = true )
     {
         static $store = null;
@@ -63,29 +72,8 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
     }
 
     /**
-     * The function retrieves the amount the contribution is for, based on the order-no google sends
-     *
-     * @param int $orderNo <order-total> send by google
-     *
-     * @return amount
-     * @access public
-     */
-    function getAmount($orderNo) {
-        require_once 'CRM/Contribute/DAO/Contribution.php';
-        $contribution = new CRM_Contribute_DAO_Contribution( );
-        $contribution->invoice_id = $orderNo;
-        if ( ! $contribution->find( true ) ) {
-            CRM_Core_Error::debug_log_message( "Could not find contribution record with invoice id: $orderNo" );
-            echo "Failure: Could not find contribution record with invoice id: $orderNo <p>";
-            exit( );
-        }
-        return $contribution->total_amount;
-    }
-
-    /**
      * This method is handles the response that will be invoked (from extern/googleNotify) every time
      * a notification or request is sent by the Google Server.
-     *
      */
     static function main()
     {
@@ -100,12 +88,6 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         require_once 'CRM/Contribute/DAO/Contribution.php';
         $config = CRM_Core_Config::singleton();
 
-        //Setup the log file
-        define('RESPONSE_HANDLER_LOG_FILE', $config->uploadDir . 'CiviCRM.Flo2Cash.log');
-        if (!$message_log = fopen(RESPONSE_HANDLER_LOG_FILE, "a")) {
-            error_func("Cannot open " . RESPONSE_HANDLER_LOG_FILE . " file.\n", 0);
-            exit(1);
-        }
         CRM_Core_Error::debug_log_message( "Transaction Received" );
 
         // GET

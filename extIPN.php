@@ -20,7 +20,7 @@ if ( !empty( $ext->path ) ) {
 }
 
 if ( class_exists( 'nz_co_giantrobot_Flo2CashDonate' ) ) {
-    nz_co_giantrobot_Flo2CashDonate::paymentNotify();
+    nz_co_giantrobot_Flo2CashDonate::handlePaymentNotification();
     $notifyHandled = TRUE;
 }
 else {

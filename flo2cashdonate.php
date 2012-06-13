@@ -34,6 +34,7 @@
  */
 
 require_once 'CRM/Core/Payment.php';
+require_once 'CRM/Core/BAO/PaymentProcessor.php';
 
 class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
     /**
@@ -49,7 +50,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
     static function &singleton( $mode, &$paymentProcessor ) {
         $processorName = $paymentProcessor['name'];
         if (self::$_singleton[$processorName] === null ) {
-            self::$_singleton[$processorName] = new nz_co_giantrobot_Flo2CashDonate( $mode, $paymentProcessor );
+            self::$_singleton[$processorName] = new nz_co_giantrobot_flo2cashdonate( $mode, $paymentProcessor );
         }
         return self::$_singleton[$processorName];
     }
@@ -78,16 +79,20 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         srand( time( ) );
         $this->_setParam( 'sequence', rand( 1, 1000 ) );
 
-        // if the IPN handler isn't installed, notify admin
-        if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
-            // check for presence of f2c_ipn.php in civicrm/extern,
-            // and advise admin of need to manually install if not
-            global $civicrm_root;
-            $ipn_php = 'extIPN.php' ;
-            $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
-            $source_path = dirname(__FILE__) . '/' . $ipn_php ;
-            if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/extIPN.php' ) ) {
-                CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
+        // Check not needed if CRM_Core_Payment::handleIPN() exists.
+        // CRM-9779
+        if (!method_exists('CRM_Core_Payment', 'handleIPN')) {
+            // If the IPN handler isn't installed, notify admin
+            if ( CRM_Core_Permission::check( 'administer CiviCRM' ) ) {
+                // check for presence of extIPN.php in civicrm/extern,
+                // and advise admin of need to manually install if not
+                global $civicrm_root;
+                $ipn_php = 'extIPN.php' ;
+                $expected_path = $civicrm_root . '/extern/' . $ipn_php ;
+                $source_path = dirname(__FILE__) . '/' . $ipn_php ;
+                if ( file_exists($source_path) && !file_exists($civicrm_root . '/extern/extIPN.php' ) ) {
+                    CRM_Core_Session::setStatus( "To complete installation of the Flo2CashDonate payment processor, please copy the file <strong>$ipn_php</strong><br />from <code>$source_path</code><br />to <code>$expected_path</code>." );
+                }
             }
         }
     }
@@ -140,30 +145,49 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
      */
     function doTransferCheckout( &$params, $component ) {
         $config =& CRM_Core_Config::singleton( );
-
         $component = strtolower( $component );
+        $processor = CRM_Core_BAO_PaymentProcessor::getPayment($params['payment_processor_id'], $this->_mode);
+        $ipn_query_data['reset'] = 1;
 
-        $server_type  = ( $this->_mode == 'test' ) ? 'sandbox' : '';
-
-        $notifyURL =
-            $config->userFrameworkResourceURL .
-            "extern/extIPN.php?reset=1&module={$component}&extension=nz.co.giantrobot.flo2cashdonate" ;
+        /**
+         * CRM_Core_Payment::handleIPN() exists if CRM-9779 is fixed.
+         * If not, then fall back to extIPN.php for older versions.
+         */
+        if (method_exists('CRM_Core_Payment', 'handleIPN')) {
+            if ($this->_mode) {
+                $ipn_query_data['mode'] = $this->_mode;
+            }
+            $ipn_query_data['module'] = $component;
+            $ipn_query_data['processor_name'] = $processor['payment_processor_type'];
+            $notifyURL = CRM_Utils_System::url('civicrm/payment/ipn', '', TRUE, NULL, FALSE);
+        }
+        else {
+            $ipn_query_data['module'] = $component;
+            $ipn_query_data['extension'] = 'nz.co.giantrobot.flo2cashdonate';
+            $notifyURL =
+                $config->userFrameworkResourceURL .
+                "extern/extIPN.php" ;
+        }
 
         $notifyParams = array('contactID', 'contributionID', 'eventID', 'participantID');
         foreach ( $notifyParams as $notifyParam ) {
             if ( isset($params[$notifyParam]) ) {
-                $notifyURL .= "&{$notifyParam}={$params[$notifyParam]}";
+                $ipn_query_data[$notifyParam] = $params[$notifyParam];
             }
         }
+
+        $ipn_query = http_build_query($ipn_query_data, NULL, '&');
+        $notifyURL .= $ipn_query;
+        // error_log('Notify URL: '.$notifyURL);
 
         $url    = ( $component == 'event' ) ? 'civicrm/event/register' : 'civicrm/contribute/transact';
         $cancel = ( $component == 'event' ) ? '_qf_Register_display'   : '_qf_Main_display';
         $returnURL = CRM_Utils_System::url( $url,
                                             "_qf_ThankYou_display=1&qfKey={$params['qfKey']}",
-                                            true, null, false );
+                                            TRUE, NULL, FALSE );
         $cancelURL = CRM_Utils_System::url( $url,
                                             "$cancel=1&cancel=1&qfKey={$params['qfKey']}",
-                                            true, null, false );
+                                            TRUE, NULL, FALSE );
 
         // ensure that the returnURL is absolute.
         if ( substr( $returnURL, 0, 4 ) != 'http' ) {
@@ -280,7 +304,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
      *
      * $_GET and $_POST are already available in IPN so no point passing them?
      */
-    function paymentNotify() {
+    function handlePaymentNotification() {
         require_once 'flo2cashdonateipn.php';
         nz_co_giantrobot_Flo2CashDonateIPN::main();
     }
