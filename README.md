@@ -17,7 +17,8 @@ Installation
 
 **Installing the Extension**
 
-See [CiviCRM's documentation](http://wiki.civicrm.org/confluence/display/CRMDOC41/Extensions) for instructions on installing CiviCRM extensions.
+See [CiviCRM's documentation](http://wiki.civicrm.org/confluence/display/CRMDOC/Extensions)
+for instructions on installing CiviCRM extensions.
 
 **Configuration**
 
@@ -38,6 +39,8 @@ using an earlier version of CiviCRM, you will also need to copy the file
 
 TODO
 ----
+
+Items to do before v1.0 release:
 
 * Link to Donate interface docs.
 * Test with Event rego.
