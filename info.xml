@@ -9,7 +9,7 @@
     <url desc="Support">http://forum.civicrm.org</url>
     <url desc="Licensing">http://www.gnu.org/copyleft/gpl.html</url>
   </urls>
-  <downloadURL></downloadURL>
+  <downloadURL>https://github.com/downloads/GiantRobot/nz.co.giantrobot.flo2cashdonate/nz.co.giantrobot.flo2cashdonate-v0.9.zip</downloadURL>
   <license>GPLv3+</license>
   <maintainer>
     <author>Chris Burgess</author>
