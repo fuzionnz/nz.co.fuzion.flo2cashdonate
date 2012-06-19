@@ -155,7 +155,7 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
             $ipn_query_data['extension'] = 'nz.co.giantrobot.flo2cashdonate';
             $notifyURL =
                 $config->userFrameworkResourceURL .
-                "extern/extIPN.php" ;
+                "extern/extIPN.php?" ;
         }
 
         $notifyParams = array('contactID', 'contributionID', 'eventID', 'participantID');
@@ -188,7 +188,6 @@ class nz_co_giantrobot_flo2cashdonate extends CRM_Core_Payment {
         // Allow further manipulation of the arguments via custom hooks ..
         CRM_Utils_Hook::alterPaymentProcessorParams( $this, $params, $paypalParams );
 
-        // Could also use "$params['is_recur'] + 1"
         $donation_type = ( !empty($params['is_recur']) ) ? 2 : 1 ;
 
         $frequencies = array(
