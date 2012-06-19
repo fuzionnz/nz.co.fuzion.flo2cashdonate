@@ -31,11 +31,21 @@ for instructions on installing CiviCRM extensions.
 
 **IPN Support**
 
-CiviCRM has built-in IPN support from v4.2.
+CiviCRM has built-in IPN support from v4.2 (see CRM-9779 for patch).
 
 Upgrading to the latest version of CiviCRM is recommended. However, if you are
 using an earlier version of CiviCRM, you will also need to copy the file
 `extIPN.php` from the extension directory to `civicrm/extern/extIPN.php`
+
+Troubleshooting
+---------------
+
+**require_once(): Failed opening required '/path/to/nz.co.giantrobot.flo2cashdonate/Flo2CashDonate.php'**
+
+The core class in this processor was renamed from Flo2CashDonate.php to
+flo2cashdonate.php, so sites upgrading this module from 0.1 to 0.9 may need
+to either uninstall and reinstall the extension, or update the DB table
+`civicrm_option_value` where the filename is stored.
 
 TODO
 ----
@@ -45,3 +55,5 @@ Items to do before v1.0 release:
 * Link to Donate interface docs.
 * Test with Event rego.
 * Verify removal of Account ID and URL Recur with F2C
+
+
