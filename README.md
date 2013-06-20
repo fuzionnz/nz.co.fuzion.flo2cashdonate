@@ -2,14 +2,14 @@ CiviCRM Flo2Cash Donate Payment Processor
 =========================================
 
 * License: GPLv3+
-* &copy; 2012 Giant Robot Ltd
+* &copy; 2012 Fuzion Aotearoa Ltd
 * Author: Chris Burgess <chris@fuzion.co.nz>
 
 Flo2Cash's Donate interface is designed for NFP (Not For Profit) organisations.
 It is a hosted solution (donors are redirected to the F2C page) and it can
 support recurring payments.
 
-* [Flo2Cash services for Not For Profits](http://www.flo2cash.co.nz/notforprofit.php)
+* [Flo2Cash services for Not For Profits](http://www.flo2cash.co.nz/notForProfit.php)
 * [Contact Flo2Cash](http://www.flo2cash.co.nz/contact.php) for more information and pricing.
 
 Installation
