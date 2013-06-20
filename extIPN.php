@@ -15,17 +15,17 @@ $config = CRM_Core_Config::singleton();
 // http://forum.civicrm.org/index.php/topic,21573.0.html
 // http://issues.civicrm.org/jira/browse/CRM-9779
 require_once 'CRM/Core/Extensions/Extension.php';
-$ext = new CRM_Core_Extensions_Extension( 'nz.co.giantrobot.flo2cashdonate' );
+$ext = new CRM_Core_Extensions_Extension( 'nz.co.fuzion.flo2cashdonate' );
 if ( !empty( $ext->path ) ) {
     require_once $ext->path . '/flo2cashdonate.php';
 }
 
-if ( class_exists( 'nz_co_giantrobot_flo2cashdonate' ) ) {
-    nz_co_giantrobot_flo2cashdonate::handlePaymentNotification();
+if ( class_exists( 'nz_co_fuzion_flo2cashdonate' ) ) {
+    nz_co_fuzion_flo2cashdonate::handlePaymentNotification();
     $notifyHandled = TRUE;
 }
 else {
-    $error = 'Extension nz.co.giantrobot.flo2cashdonate not enabled or not installed.';
+    $error = 'Extension nz.co.fuzion.flo2cashdonate not enabled or not installed.';
     CRM_Core_Error::debug_log_message( $error );
     die( $error );
 }

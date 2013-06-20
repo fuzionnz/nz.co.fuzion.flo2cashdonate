@@ -1,8 +1,38 @@
 <?php
 
+/*
+ +--------------------------------------------------------------------+
+ | Flo2Cash Donate                                                    |
+ +--------------------------------------------------------------------+
+ | Copyright Giant Robot Ltd (c) 2007-2012                            |
+ +--------------------------------------------------------------------+
+ | This file is a payment processor for CiviCRM.                      |
+ |                                                                    |
+ | CiviCRM is free software; you can copy, modify, and distribute it  |
+ | under the terms of the GNU Affero General Public License           |
+ | Version 3, 19 November 2007.                                       |
+ |                                                                    |
+ | CiviCRM is distributed in the hope that it will be useful, but     |
+ | WITHOUT ANY WARRANTY; without even the implied warranty of         |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
+ | See the GNU Affero General Public License for more details.        |
+ |                                                                    |
+ | You should have received a copy of the GNU Affero General Public   |
+ | License along with this program; if not, contact CiviCRM LLC       |
+ | at info[AT]civicrm[DOT]org. If you have questions about the        |
+ | GNU Affero General Public License or the licensing of CiviCRM,     |
+ | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
+ +--------------------------------------------------------------------+
+*/
+
+/**
+ * @package CRM
+ * @copyright Giant Robot Ltd (c) 2007-2012
+ */
+
 require_once 'CRM/Core/Payment/BaseIPN.php';
 
-class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
+class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
 
     /**
      * We only need one instance of this object. So we use the singleton
@@ -28,13 +58,14 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      *
      * @return void
      */
-    function __construct( $mode ) {
+    function __construct($mode, &$paymentProcessor) {
         parent::__construct( );
         $this->_mode = $mode;
+        $this->_paymentProcessor = $paymentProcessor;
     }
 
     /**
-     * singleton function used to manage this object
+     * Singleton function used to manage this object.
      *
      * @param string $mode the mode of operation: live or test
      *
@@ -43,7 +74,7 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      */
     static function &singleton( $mode, $component ) {
         if ( self::$_singleton === null ) {
-            self::$_singleton = new nz_co_giantrobot_Flo2CashDonateIPN( $mode );
+            self::$_singleton = new nz_co_fuzion_Flo2CashDonateIPN( $mode );
         }
         return self::$_singleton;
     }
@@ -72,11 +103,11 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
     }
 
     /**
-     * This method is handles the response that will be invoked (from extern/googleNotify) every time
-     * a notification or request is sent by the Google Server.
+     * This method handles the response that will be invoked (from
+     * extern/googleNotify) every time a notification or request is
+     * sent by the Google Server.
      */
-    static function main()
-    {
+    static function main() {
 /* for IPN debugging - store the IPN data in /tmp/ and process manually */
 //        if ( $_SERVER['REMOTE_ADDR'] != '10.0.0.5' ) {
 //            file_put_contents('/tmp/f2c_ext.' . date('YmdHis') . '.txt', var_export(array('_GET' => $_GET, '_POST' => $_POST),1));
@@ -165,5 +196,24 @@ class nz_co_giantrobot_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         }
 
     }
+
+  /**
+   * The function gets called when a new order takes place.
+   *
+   * @param array  $privateData  contains the CiviCRM related data
+   * @param string $component    the CiviCRM component
+   * @param array  $merchantData contains the Merchant related data
+   *
+   * @return void
+   *
+   */
+  function newOrderNotify($privateData, $component, $merchantData) {
+    $debug = print_r(array(
+               'privateData' => $privateData,
+               'component' => $component,
+               'merchantData' => $merchantData,
+             ));
+    file_put_contents('/tmp/ipn.txt', $debug);
+  }
 
 }
