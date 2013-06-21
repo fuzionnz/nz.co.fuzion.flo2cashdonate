@@ -139,7 +139,6 @@ class nz_co_fuzion_flo2cashdonate extends CRM_Core_Payment {
   function doTransferCheckout(&$params, $component) {
     $config =& CRM_Core_Config::singleton();
     $component = strtolower($component);
-    $processor = CRM_Core_BAO_PaymentProcessor::getPayment($params['payment_processor_id'], $this->_mode);
     $ipn_query_data['reset'] = 1;
 
     /**
@@ -153,8 +152,8 @@ class nz_co_fuzion_flo2cashdonate extends CRM_Core_Payment {
       $ipn_query_data['module'] = $component;
       // CRM-12720 - use processor_id instead of processor_name.
       $ipn_query_data['processor_id'] = $params['payment_processor_id'];
-      // This ought to come from $processor['payment_processor_type'];
-      // $ipn_query_data['processor_name'] = 'Flo2Cash Donate';
+      // Remove when CRM-12720 is committed.
+      $ipn_query_data['processor_name'] = 'Flo2Cash Donate';
       $notifyURL = CRM_Utils_System::url('civicrm/payment/ipn', '', TRUE, NULL, FALSE);
     }
     else {
