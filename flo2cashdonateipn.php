@@ -162,13 +162,13 @@ class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
         list( $ids['membership'], $ids['related_contact'], $ids['onbehalf_dupe_alert'] ) =
             explode( CRM_Core_DAO::VALUE_SEPARATOR, $contribution->trxn_id );
 
-        foreach ( array('membership', 'related_contact', 'onbehalf_dupe_alert') as $fld ) {
-            if ( ! is_numeric( $ids[$fld] ) ) {
-                unset( $ids[$fld] );
+        foreach (array('membership', 'related_contact', 'onbehalf_dupe_alert') as $fld) {
+            if (!is_numeric($ids[$fld])) {
+                unset($ids[$fld]);
             }
         }
 
-        $ipn->loadObjects( $input, $ids, $objects, true );
+        $ipn->loadObjects($input, $ids, $objects, FALSE, TRUE);
 
         require_once 'CRM/Core/Transaction.php';
         $transaction = new CRM_Core_Transaction( );
