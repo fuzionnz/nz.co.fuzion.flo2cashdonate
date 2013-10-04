@@ -175,6 +175,8 @@ class nz_co_fuzion_flo2cashdonate extends CRM_Core_Payment {
         $ipn_query_data[$notifyParam] = $params[$notifyParam];
       }
     }
+    // Add Donation_ID parameter to IPN call.
+    $ipn_query_data['Donation_ID'] = $params['contributionID'];
 
     $ipn_query = http_build_query($ipn_query_data, NULL, '&');
     $notifyURL .= $ipn_query;

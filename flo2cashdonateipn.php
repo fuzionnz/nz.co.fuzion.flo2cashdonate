@@ -74,7 +74,8 @@ class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
      */
     static function &singleton( $mode, $component ) {
         if ( self::$_singleton === null ) {
-            self::$_singleton = new nz_co_fuzion_Flo2CashDonateIPN( $mode );
+            $pp = array();
+            self::$_singleton = new nz_co_fuzion_Flo2CashDonateIPN($mode, $pp);
         }
         return self::$_singleton;
     }
