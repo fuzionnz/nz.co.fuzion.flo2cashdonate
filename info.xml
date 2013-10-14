@@ -25,7 +25,7 @@
   </compatibility>
   <comments></comments>
   <typeInfo>
-   <userNameLabel>Account Name</userNameLabel>
+   <userNameLabel>Account ID</userNameLabel>
    <passwordLabel></passwordLabel>
    <signatureLabel></signatureLabel>
    <subjectLabel></subjectLabel>
