@@ -11,9 +11,24 @@ function _civicrm_api3_flo2cash_create_spec(&$spec) {
   $spec['trxn_id'] = array(
     'api.is_required' => 1,
     'title' => 'Transaction ID',
+    'name' => 'trxn_id',
   );
   $spec['amount'] = array(
     'title' => 'Amount',
+    'name' => 'amount',
+  );
+  $spec['status_id'] = array(
+    'title' => 'Status',
+    'name' => 'status_id',
+  );
+  $spec['receive_date'] = array(
+    'title' => 'Recive Date',
+    'type' => CRM_Utils_Type::T_DATE,
+    'name' => 'receive_date',
+  );
+  $spec['identifier'] = array(
+    'title' => 'Identifier',
+    'name' => 'identifier',
   );
 }
 
@@ -30,7 +45,7 @@ function civicrm_api3_flo2cash_create($params) {
  print_r($params);
  try{
   $cparams = array(
-    'return' => array('source', 'contribution_page_id', 'contribution_recur_id', 'contact_id', 'financial_type')
+    'return' => array('contribution_source', 'contribution_page_id', 'contribution_recur_id', 'contact_id', 'financial_type')
   );
   if(!empty($params['identifier'])) {
     $cparams['trxn_id'] = $params['identifier'];
@@ -41,8 +56,9 @@ function civicrm_api3_flo2cash_create($params) {
   }
   $origCont = civicrm_api3('contribution', 'getsingle', $cparams);
 
-  $dateParts = explode('/', $params['receive_date']);
-  $params['receive_date'] = $dateParts[0] . "-" . $dateParts[1] . "-" .  $dateParts[2];
+//  $dateParts = explode('/', $params['receive_date']);
+//  dpm($d)
+//  $params['receive_date'] = $dateParts[0] . "-" . $dateParts[1] . "-" .  $dateParts[2];
   $statusmap = array(
     'Successful' => 'Completed',
     'Bank Declined' => 'Failed',
@@ -71,7 +87,7 @@ function civicrm_api3_flo2cash_create($params) {
     'trxn_id' => $params['trxn_id'],
     'contribution_page_id' => $origCont['contribution_page_id'],
     'contribution_status_id' => $statusmap[$params['status_id']],
-    'source' => ts(' Flo2Cash (repeat)') . $origCont['source'],
+    'source' => ts(' Flo2Cash (repeat)') . $origCont['contribution_source'],
   )
   );
 
