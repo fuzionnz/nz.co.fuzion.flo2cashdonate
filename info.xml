@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- <extension key="nz.co.fuzion.flo2cashdonate" type="payment">
+ <extension key="nz.co.fuzion.flo2cashdonate" type="module">
   <file>flo2cashdonate</file>
   <name>Flo2Cash Donate</name>
   <description>Flo2Cash Donate Payment Processor</description>
@@ -41,4 +41,9 @@
    <isRecur>1</isRecur>
    <paymentType>1</paymentType>
   </typeInfo>
+  <comments>This is a new, undeveloped module</comments>
+  <civix>
+    <namespace>CRM/Flo2cashdonate</namespace>
+  </civix>
+
 </extension>
