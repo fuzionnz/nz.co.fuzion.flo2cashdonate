@@ -42,8 +42,6 @@ function _civicrm_api3_flo2cash_create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_flo2cash_create($params) {
- print_r($params);
- try{
   $cparams = array(
     'return' => array('contribution_source', 'contribution_page_id', 'contribution_recur_id', 'contact_id', 'financial_type')
   );
@@ -56,9 +54,6 @@ function civicrm_api3_flo2cash_create($params) {
   }
   $origCont = civicrm_api3('contribution', 'getsingle', $cparams);
 
-//  $dateParts = explode('/', $params['receive_date']);
-//  dpm($d)
-//  $params['receive_date'] = $dateParts[0] . "-" . $dateParts[1] . "-" .  $dateParts[2];
   $statusmap = array(
     'Successful' => 'Completed',
     'Bank Declined' => 'Failed',
@@ -66,18 +61,7 @@ function civicrm_api3_flo2cash_create($params) {
     'Declined - Insufficient funds' => 'Failed',
     'Processing' => 'Pending',
   );
-  /*
-  print_r(array(
-    'total_amount' => $params['amount'],
-    'receive_date' => $params['receive_date'],
-    'contribution_recur_id' => $origCont['contribution_recur_id'],
-    'contact_id' => $origCont['contact_id'],
-    'financial_type_id' => $origCont['financial_type_id'],
-    'trxn_id' => $params['trxn_id'],
-    'contribution_page_id' => $origCont['contribution_page_id'],
-    'contribution_status_id' => $statusmap[$params['status_id']],
-    'source' => ts(' Flo2Cash (repeat)') . $origCont['source'],
-  ));*/
+
   $result = civicrm_api3('contribution', 'create', array(
     'total_amount' => $params['amount'],
     'receive_date' => $params['receive_date'],
@@ -96,9 +80,7 @@ function civicrm_api3_flo2cash_create($params) {
     $nextDate = date('Y-m-d', strtotime("+ " . $recur['frequency_interval'] . " " . $recur['frequency_unit'], strtotime($params['receive_date'])));
     civicrm_api3('contribution_recur', 'create', array('id' => $recur['id'], 'next_sched_contribution_date' => $nextDate));
   }
- }
- catch (EXCEPTION $e) {
- }
+
   // Spec: civicrm_api3_create_success($values = 1, $params = array(), $entity = NULL, $action = NULL)
   return civicrm_api3_create_success($result['values'], $params, 'Flo2CashDD', 'import');
 }
