@@ -114,10 +114,6 @@ class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
 //            file_put_contents('/tmp/f2c_ext.' . date('YmdHis') . '.txt', var_export(array('_GET' => $_GET, '_POST' => $_POST),1));
 //            die();
 //        }
-
-        require_once 'CRM/Core/Config.php';
-        require_once 'CRM/Utils/Request.php';
-        require_once 'CRM/Contribute/DAO/Contribution.php';
         $config = CRM_Core_Config::singleton();
 
         CRM_Core_Error::debug_log_message( "Transaction Received" );
