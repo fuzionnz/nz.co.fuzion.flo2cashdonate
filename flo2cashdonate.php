@@ -181,8 +181,6 @@ class nz_co_fuzion_flo2cashdonate extends CRM_Core_Payment {
     $ipn_query = http_build_query($ipn_query_data, NULL, '&');
     $notifyURL .= $ipn_query;
 
-//    $notifyURL = 'https://crm.dev.greens.org.nz/ipn';
-
     $url    = ($component == 'event') ? 'civicrm/event/register' : 'civicrm/contribute/transact';
     $cancel = ($component == 'event') ? '_qf_Register_display'   : '_qf_Main_display';
     $returnURL = CRM_Utils_System::url($url,
