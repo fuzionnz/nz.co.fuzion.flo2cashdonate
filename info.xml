@@ -1,44 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
- <extension key="nz.co.fuzion.flo2cashdonate" type="payment">
+<?xml version="1.0"?>
+<extension key="nz.co.fuzion.flo2cashdonate" type="module">
   <file>flo2cashdonate</file>
   <name>Flo2Cash Donate</name>
   <description>Flo2Cash Donate Payment Processor</description>
+  <license>GPLv3+</license>
+  <maintainer>
+    <author>Chris Burgess</author>
+    <email>chris@fuzion.co.nz</email>
+  </maintainer>
   <urls>
     <url desc="Main Extension Page">http://www.fuzion.co.nz/projects/flo2cashdonate</url>
     <url desc="Documentation">http://www.fuzion.co.nz/projects/flo2cashdonate/docs</url>
     <url desc="Support">http://forum.civicrm.org</url>
     <url desc="Licensing">http://www.gnu.org/copyleft/gpl.html</url>
   </urls>
-  <license>GPLv3+</license>
-  <maintainer>
-    <author>Chris Burgess</author>
-    <email>chris@fuzion.co.nz</email>
-  </maintainer>
-  <releaseDate>2013-06-20</releaseDate>
-  <version>1.0</version>
-  <develStage>stable</develStage>
+  <releaseDate>2017-07-18</releaseDate>
+  <version>2.0</version>
+  <develStage>alpha</develStage>
   <compatibility>
-    <ver>3.4</ver>
-    <ver>4.2</ver>
-    <ver>4.3</ver>
-    <ver>4.4</ver>
+    <ver>4.7</ver>
   </compatibility>
-  <comments></comments>
-  <typeInfo>
-   <userNameLabel>Account ID</userNameLabel>
-   <passwordLabel></passwordLabel>
-   <signatureLabel></signatureLabel>
-   <subjectLabel></subjectLabel>
-   <urlSiteDefault>https://secure.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlSiteDefault>
-   <urlApiDefault></urlApiDefault>
-   <urlRecurDefault></urlRecurDefault>
-   <urlSiteTestDefault>http://demo.flo2cash.co.nz/donations/ORGNAME/donate.aspx</urlSiteTestDefault>
-   <urlApiTestDefault></urlApiTestDefault>
-   <urlRecurTestDefault></urlRecurTestDefault>
-   <urlButtonDefault></urlButtonDefault>
-   <urlButtonTestDefault></urlButtonTestDefault>
-   <billingMode>notify</billingMode>
-   <isRecur>1</isRecur>
-   <paymentType>1</paymentType>
-  </typeInfo>
+  <comments>This is a new, undeveloped module</comments>
+  <civix>
+    <namespace>CRM/Flo2cashdonate</namespace>
+  </civix>
 </extension>
