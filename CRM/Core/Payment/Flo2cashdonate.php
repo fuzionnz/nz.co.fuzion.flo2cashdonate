@@ -301,7 +301,7 @@ class CRM_Core_Payment_Flo2cashdonate extends CRM_Core_Payment {
    * $_GET and $_POST are already available in IPN so no point passing them?
    */
   function handlePaymentNotification() {
-    require_once 'flo2cashdonateipn.php';
+    require_once 'CRM/Core/Payment/Flo2cashdonateipn.php';
     CRM_Core_Payment_Flo2CashDonateIPN::main();
   }
 
