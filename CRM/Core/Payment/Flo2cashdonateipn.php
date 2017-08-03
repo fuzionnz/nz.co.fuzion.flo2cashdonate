@@ -32,7 +32,7 @@
 
 require_once 'CRM/Core/Payment/BaseIPN.php';
 
-class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
+class CRM_Core_Payment_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
 
     /**
      * We only need one instance of this object. So we use the singleton
@@ -75,7 +75,7 @@ class nz_co_fuzion_Flo2CashDonateIPN extends CRM_Core_Payment_BaseIPN {
     static function &singleton( $mode, $component ) {
         if ( self::$_singleton === null ) {
             $pp = array();
-            self::$_singleton = new nz_co_fuzion_Flo2CashDonateIPN($mode, $pp);
+            self::$_singleton = new CRM_Core_Payment_Flo2CashDonateIPN($mode, $pp);
         }
         return self::$_singleton;
     }

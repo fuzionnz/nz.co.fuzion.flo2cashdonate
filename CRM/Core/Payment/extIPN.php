@@ -17,15 +17,15 @@ $config = CRM_Core_Config::singleton();
 require_once 'CRM/Core/Extensions/Extension.php';
 $ext = new CRM_Core_Extensions_Extension( 'nz.co.fuzion.flo2cashdonate' );
 if ( !empty( $ext->path ) ) {
-    require_once $ext->path . '/flo2cashdonate.php';
+    require_once $ext->path . '/CRM/Core/Payment/flo2cashdonate.php';
 }
 
-if ( class_exists( 'nz_co_fuzion_flo2cashdonate' ) ) {
-    nz_co_fuzion_flo2cashdonate::handlePaymentNotification();
+if ( class_exists( 'CRM_Core_Payment_Flo2cashdonate' ) ) {
+    CRM_Core_Payment_Flo2cashdonate::handlePaymentNotification();
     $notifyHandled = TRUE;
 }
 else {
-    $error = 'Extension nz.co.fuzion.flo2cashdonate not enabled or not installed.';
+    $error = 'Extension CRM_Core_Payment_Flo2cashdonate not enabled or not installed.';
     CRM_Core_Error::debug_log_message( $error );
     die( $error );
 }
