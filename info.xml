@@ -23,5 +23,12 @@
   <comments>This is a new, undeveloped module</comments>
   <civix>
     <namespace>CRM/Flo2cashdonate</namespace>
+    <format>22.10.0</format>
   </civix>
+  <mixins>
+    <mixin>mgd-php@1.0.0</mixin>
+  </mixins>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+  </classloader>
 </extension>
